@@ -22,7 +22,7 @@ const getters = {
 
 const mutations = {
     changeFunds: (state, payload) => {
-        let newFunds = state.funds - payload.changeAmount 
+        let newFunds = state.funds - payload.changeAmount;
     }
 }
 
