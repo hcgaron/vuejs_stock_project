@@ -61,9 +61,6 @@ export default {
         quantity: numShares,
         price: purchaseOrder.price
       };
-
-      console.log(numShares);
-      console.log(purchaseDetails.price);
       this.buyStock(purchaseDetails);
     }
   }

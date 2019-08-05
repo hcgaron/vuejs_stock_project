@@ -44,7 +44,25 @@ const getters = {
     // }
 }
 
+const mutations = {
+    updateStockPrices: (state) => {
+        for (let stock of state.stocks) {
+            let priceChange = (Math.random() - 0.5) * 10;
+            let oldPrice = Number(stock.price);
+            stock.price = Number(oldPrice + priceChange).toFixed(2);
+        }
+    }
+}
+
+const actions = {
+    updateStockPrices: (context) => {
+        context.commit('updateStockPrices')
+    } 
+}
+
 export default {
     state,
-    getters
+    getters,
+    actions,
+    mutations
 }

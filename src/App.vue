@@ -2,7 +2,12 @@
   <div class="container-fluid">
     <div id="app" class="col-xs-12 col-md-10 offset-md-1">
       <app-header></app-header>
-      <router-view></router-view>
+      <transition 
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+      mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -26,5 +31,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.animated {
+  animation-duration: 0.2s;
 }
 </style>

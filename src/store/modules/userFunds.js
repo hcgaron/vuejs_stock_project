@@ -10,12 +10,6 @@ const state = {
         price: number
     }
     */
-    { //fake entry for testing
-      ticker: 'AAPL',
-      name: 'Apple',
-      quantity: 200,
-      price: 112
-    }
   ]
 }
 
@@ -55,11 +49,36 @@ const mutations = {
     // payload should be an object matching those in portfolio array
     state.portfolio.push(payload);
     state.funds -= (Number(payload.price) * Number(payload.quantity))
+  },
+  checkHoldingStatus: (ticker) => {
+    let currentShares = state.portfolio.find((t) => { return t.ticker == ticker }).quantity;
+    if (currentShares < 1) {
+      let idx = state.portfolio.findIndex((t) => { return t.ticker == ticker});
+      state.portfolio.splice(idx, 1);
+    }
+  },
+  sellStock: (state, payload) => {
+    for (let holding of state.portfolio) {
+      // find the stock we want to sell
+      if (holding.ticker === payload.ticker) {
+        let sellQuantity = Number(payload.quantity);
+        let sellPrice = Number(payload.price)
+
+        holding.quantity -= sellQuantity;
+        state.funds += (sellQuantity * sellPrice);
+        // if holdings are now zero, remove from our portfolio
+        mutations.checkHoldingStatus(payload.ticker);
+        return;
+      }
+    }
   }
 }
 const actions = {
   buyStock: (context, payload) => {
     context.commit('buyStock', payload);
+  },
+  sellStock: (context, payload) => {
+    context.commit('sellStock', payload)
   }
 }
 

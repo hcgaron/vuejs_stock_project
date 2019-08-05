@@ -31,7 +31,7 @@
         </ul>
         <!-- Right Side of NavBar -->
         <div>
-          <button class="btn">End Day</button>
+          <button class="btn" @click="updateStockPrices">End Day</button>
         </div>
 
         <div class="dropdown"> <!-- dropdown container is very important -->
@@ -61,10 +61,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex"
 export default {
   computed: {
     ...mapGetters('userFunds', {
       funds: 'getFunds'
+    }),
+  },
+  methods: {
+    ...mapActions('stocks', {
+      updateStockPrices: 'updateStockPrices'
     })
   }
 }
