@@ -12,10 +12,14 @@
             <input
               type="text"
               class="form-control mb-2 mr-sm-2"
-              id="quantity"
+              :id="`${stock.name}Quantity`"
               placeholder="Quantity"
             />
-              <button type="submit" class="btn btn-success mb-2 float-right">Buy</button>
+            <button
+              type="submit"
+              class="btn btn-success mb-2 float-right"
+              @click.prevent="preparePurchase({ticker: stock.ticker, name: stock.name, price: stock.price}, $event)"
+            >Buy</button>
           </form>
         </div>
       </div>
@@ -25,11 +29,43 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
+  data() {
+    return {
+      // quantity:
+    };
+  },
   computed: {
     ...mapGetters("stocks", {
       stocks: "getStocks"
     })
+  },
+  methods: {
+    ...mapActions("userFunds", {
+      buyStock: "buyStock"
+    }),
+    preparePurchase(purchaseOrder, event) {
+      let purchaseBox = document.getElementById(`${purchaseOrder.name}Quantity`);
+      let numShares = purchaseBox.value;
+      
+      // do nothing if no quantity was entered
+      if (numShares === '') {
+        return;
+      }
+
+      // console.log(numShares);
+      let purchaseDetails = {
+        ticker: purchaseOrder.ticker,
+        name: purchaseOrder.name,
+        quantity: numShares,
+        price: purchaseOrder.price
+      };
+
+      console.log(numShares);
+      console.log(purchaseDetails.price);
+      this.buyStock(purchaseDetails);
+    }
   }
 };
 </script>
