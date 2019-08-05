@@ -47,12 +47,14 @@ const mutations = {
 
         holding.quantity = newQuantity;
         holding.price = newAverage;
+        state.funds -= (Number(payload.price) * Number(payload.quantity))
         // we return empty so as to not push duplicate onto the array
         return;
       }
     }
     // payload should be an object matching those in portfolio array
     state.portfolio.push(payload);
+    state.funds -= (Number(payload.price) * Number(payload.quantity))
   }
 }
 const actions = {
