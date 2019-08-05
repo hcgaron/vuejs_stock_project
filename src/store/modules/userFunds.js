@@ -1,3 +1,6 @@
+import Vue from 'vue';
+// import VueResource from 'vue-resource';
+
 const state = {
   funds: 10000,
   portfolio: [
@@ -71,6 +74,10 @@ const mutations = {
         return;
       }
     }
+  },
+  loadSavedState: (state, payload) => {
+    state.funds = Number(payload.funds.replace(/[^\d.]/gi, ''));
+    state.portfolio = payload.portfolio;
   }
 }
 const actions = {
@@ -78,8 +85,21 @@ const actions = {
     context.commit('buyStock', payload);
   },
   sellStock: (context, payload) => {
-    context.commit('sellStock', payload)
+    context.commit('sellStock', payload);
+  },
+  loadData: (context) => {
+    Vue.http.get('')
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        context.commit('loadSavedState', data);
+      })
   }
+}
+
+const methods = {
+  
 }
 
 export default {

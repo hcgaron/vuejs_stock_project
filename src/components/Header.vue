@@ -34,7 +34,8 @@
           <button class="btn" @click="updateStockPrices">End Day</button>
         </div>
 
-        <div class="dropdown"> <!-- dropdown container is very important -->
+        <div class="dropdown">
+          <!-- dropdown container is very important -->
           <a
             class="nav-link dropdown-toggle text-decoration-none text-reset"
             href="#"
@@ -45,10 +46,10 @@
             aria-expanded="false"
           >Save &amp; Load</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#" @click="saveData">Save</a>
+            <a class="dropdown-item" href="#" @click="retrieveData">Load</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item disabled" href="#">Your Data</a>
           </div>
         </div>
 
@@ -61,17 +62,35 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { mapActions } from "vuex"
+import { mapActions } from "vuex";
+import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapGetters('userFunds', {
-      funds: 'getFunds'
+    ...mapGetters("userFunds", {
+      funds: "getFunds"
     }),
+    ...mapState("userFunds", {
+      fundState: "funds",
+      portfolio: "portfolio"
+    })
   },
   methods: {
-    ...mapActions('stocks', {
-      updateStockPrices: 'updateStockPrices'
-    })
+    ...mapActions("stocks", {
+      updateStockPrices: "updateStockPrices"
+    }),
+    ...mapActions("userFunds", {
+      loadData: "loadData"
+    }),
+    saveData() {
+      this.$http
+        .put("", { funds: this.funds, portfolio: this.portfolio })
+        .then(response => {
+          console.log(response);
+        });
+    },
+    retrieveData() {
+      this.loadData();
+    }
   }
-}
+};
 </script>
