@@ -20,9 +20,15 @@ const getters = {
     }
 }
 
+const mutations = {
+    changeFunds: (state, payload) => {
+        let newFunds = state.funds - payload.changeAmount 
+    }
+}
+
 export default {
     state,
-    // mutations,
+    mutations,
     // actions,
     getters    
 }
